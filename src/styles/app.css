@@ -245,8 +245,18 @@ input, select, textarea, button { font: inherit; }
 
 .filter-row--months {
   margin-top: -8px;
-  padding-inline: 4px;
-  scroll-padding-inline: 4px;
+  padding-inline: 16px;
+  scroll-padding-inline: 16px;
+  -webkit-mask-image: linear-gradient(
+    to left,
+    oklch(0 0 0) calc(100% - 16px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to left,
+    oklch(0 0 0) calc(100% - 16px),
+    transparent 100%
+  );
 }
 
 .chip {
@@ -436,7 +446,7 @@ input, select, textarea, button { font: inherit; }
   width: 74px;
   border-radius: 12px;
   background: var(--accent-soft-2);
-  padding: 12px 8px;
+  padding: 11px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -452,6 +462,7 @@ input, select, textarea, button { font: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 26px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -497,6 +508,8 @@ input, select, textarea, button { font: inherit; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 26px;
+  line-height: 1;
 }
 
 .event-meta {
