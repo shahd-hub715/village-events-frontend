@@ -245,16 +245,16 @@ input, select, textarea, button { font: inherit; }
 
 .filter-row--months {
   margin-top: -8px;
-  padding-inline: 16px;
-  scroll-padding-inline: 16px;
+  padding-inline: 8px;
+  scroll-padding-inline: 8px;
   -webkit-mask-image: linear-gradient(
     to left,
-    oklch(0 0 0) calc(100% - 16px),
+    oklch(0 0 0) calc(100% - 8px),
     transparent 100%
   );
   mask-image: linear-gradient(
     to left,
-    oklch(0 0 0) calc(100% - 16px),
+    oklch(0 0 0) calc(100% - 8px),
     transparent 100%
   );
 }
