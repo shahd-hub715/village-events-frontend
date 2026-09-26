@@ -1,0 +1,81 @@
+/* "طلب تعديل أو حذف مناسبة" — public entry link, form bits, admin details. */
+
+.hero-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--accent-chip-line);
+  cursor: pointer;
+}
+.hero-link:hover { text-decoration-color: currentColor; }
+
+.cr-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.cr-legend { padding: 0; margin-bottom: 7px; }
+
+.cr-type { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cr-type-option { position: relative; display: block; }
+.cr-type-option input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.cr-type-option span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-input);
+  border-radius: 11px;
+  background: var(--surface);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+.cr-type-option input:hover + span { border-color: var(--accent-hover-line); }
+.cr-type-option input:checked + span {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+.cr-type-option input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cr-fieldset[aria-invalid="true"] .cr-type-option span { border-color: var(--danger-line); }
+
+.cr-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 4px 6px;
+  text-align: center;
+}
+.cr-success-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+}
+.cr-success-text { margin: 0 0 8px; max-width: 38ch; }
+.cr-success .btn { align-self: stretch; }
+
+/* admin: keep the visitor's line breaks */
+.cr-details { white-space: pre-line; }
+
+.cr-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cr-actions .btn {
+  width: 100%;
+}
