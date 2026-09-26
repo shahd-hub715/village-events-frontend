@@ -7,6 +7,7 @@ import { createEvent } from "../services/eventService";
 import type { CreateEventRequest, EventType, FieldErrors } from "../types/event";
 import type { SubmissionResult } from "../types/ui";
 import { isPastDate, todayIso } from "../utils/date";
+import NumericDatePicker from "./NumericDatePicker";
 
 interface AddEventFormProps {
   /** ISO dates that already have an approved event — drives the calm same-date notice. */
@@ -183,17 +184,13 @@ export default function AddEventForm({
           <label className="label" htmlFor="eventDate">
             {strings.form.fields.eventDate} <span className="required">*</span>
           </label>
-          <input
+          <NumericDatePicker
             id="eventDate"
-            name="eventDate"
-            className="input"
-            type="date"
-            required
+            value={form.eventDate}
             min={todayIso()}
             max={maxSelectableDate()}
-            value={form.eventDate}
-            aria-invalid={!!fieldErrors.eventDate}
-            onChange={(event) => update("eventDate", event.target.value)}
+            invalid={!!fieldErrors.eventDate}
+            onChange={(value) => update("eventDate", value)}
           />
           {dateTaken ? (
             <span className="field-hint">{strings.form.dateTakenHint}</span>

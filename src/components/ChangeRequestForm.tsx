@@ -8,6 +8,9 @@ import type {
   CreateChangeRequest
 } from "../types/changeRequest";
 import "../styles/changeRequest.css";
+import NumericDatePicker from "./NumericDatePicker";
+import { maxSelectableDate } from "../config/years";
+import { todayIso } from "../utils/date";
 
 interface ChangeRequestFormProps {
   onClose: () => void;
@@ -262,7 +265,7 @@ export default function ChangeRequestForm({
                 <span>
                   {
                     CHANGE_REQUEST_TYPE_LABELS[
-                      type
+                    type
                     ]
                   }
                 </span>
@@ -326,19 +329,14 @@ export default function ChangeRequestForm({
             </span>
           </label>
 
-          <input
+          <NumericDatePicker
             id="cr-eventDate"
-            className="input"
-            type="date"
             value={form.eventDate}
-            aria-invalid={
-              !!fieldErrors.eventDate
-            }
-            onChange={(event) =>
-              update(
-                "eventDate",
-                event.target.value
-              )
+            min={todayIso()}
+            max={maxSelectableDate()}
+            invalid={!!fieldErrors.eventDate}
+            onChange={(value) =>
+              update("eventDate", value)
             }
           />
 
