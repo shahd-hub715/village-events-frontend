@@ -245,6 +245,7 @@ input, select, textarea, button { font: inherit; }
 
 .filter-row--months {
   margin-top: -8px;
+  margin-inline: -8px;
   padding-inline: 8px;
   scroll-padding-inline: 8px;
   -webkit-mask-image: linear-gradient(
