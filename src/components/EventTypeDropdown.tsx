@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { EVENT_TYPE_OPTIONS } from "../config/strings";
 import type { EventType } from "../types/event";
 
@@ -8,6 +7,8 @@ interface EventTypeDropdownProps {
   placeholder: string;
   invalid?: boolean;
   onChange: (value: EventType) => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 function ChevronIcon() {
@@ -35,15 +36,15 @@ export default function EventTypeDropdown({
   value,
   placeholder,
   invalid = false,
-  onChange
+  onChange,
+  open,
+  onOpenChange
 }: EventTypeDropdownProps) {
-  const [open, setOpen] = useState(false);
-
   const selected = EVENT_TYPE_OPTIONS.find((option) => option.value === value);
 
   const choose = (next: EventType) => {
     onChange(next);
-    setOpen(false);
+    onOpenChange(false);
   };
 
   return (
@@ -55,7 +56,7 @@ export default function EventTypeDropdown({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-invalid={invalid}
-        onClick={() => setOpen((current) => !current)}
+        onClick={() => onOpenChange(!open)}
       >
         <span>{selected ? selected.label : placeholder}</span>
         <ChevronIcon />

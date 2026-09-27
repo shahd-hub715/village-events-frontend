@@ -741,15 +741,15 @@ select.input {
   display: block;
   -webkit-appearance: none;
   appearance: none;
-  padding: 12px 14px;
+  padding: 10px 14px;
   text-align: right;
-  color: var(--ink);
+  color: var(--accent);
 }
 
 .event-type-dropdown .numeric-date-option:hover,
 .event-type-dropdown .numeric-date-option:focus-visible {
   background: var(--surface-muted);
-  color: var(--ink);
+  color: var(--accent);
   outline: none;
 }
 
@@ -881,6 +881,7 @@ select.input {
   font: inherit;
   text-align: center;
   cursor: pointer;
+  color: var(--accent);
 }
 
 .numeric-date-option:hover,

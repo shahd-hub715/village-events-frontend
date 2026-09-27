@@ -45,6 +45,8 @@ export default function AddEventForm({
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [pendingPayload, setPendingPayload] = useState<CreateEventRequest | null>(null);
+  // Coordinates the date picker's day/month/year menus and the event-type dropdown so only one is open at a time.
+  const [openMenu, setOpenMenu] = useState<"day" | "month" | "year" | "eventType" | null>(null);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -166,6 +168,8 @@ export default function AddEventForm({
             placeholder={strings.form.placeholders.eventType}
             invalid={!!fieldErrors.eventType}
             onChange={(value) => update("eventType", value)}
+            open={openMenu === "eventType"}
+            onOpenChange={(next) => setOpenMenu(next ? "eventType" : null)}
           />
           {fieldErrors.eventType ? (
             <span className="field-error">{fieldErrors.eventType}</span>
@@ -183,6 +187,12 @@ export default function AddEventForm({
             max={maxSelectableDate()}
             invalid={!!fieldErrors.eventDate}
             onChange={(value) => update("eventDate", value)}
+            openPicker={
+              openMenu === "day" || openMenu === "month" || openMenu === "year"
+                ? openMenu
+                : null
+            }
+            onOpenPickerChange={setOpenMenu}
           />
           {dateTaken ? (
             <span className="field-hint">{strings.form.dateTakenHint}</span>

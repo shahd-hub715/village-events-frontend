@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 
+type PickerType = "day" | "month" | "year" | null;
+
 interface NumericDatePickerProps {
   id: string;
   value: string;
@@ -7,6 +9,9 @@ interface NumericDatePickerProps {
   max: string;
   invalid?: boolean;
   onChange: (value: string) => void;
+  /** Omit for a self-contained picker; pass both to coordinate with a sibling menu (e.g. only one dropdown open at a time). */
+  openPicker?: PickerType;
+  onOpenPickerChange?: (next: PickerType) => void;
 }
 
 function pad(value: number) {
@@ -16,8 +21,6 @@ function pad(value: number) {
 function daysInMonth(year: number, month: number) {
   return new Date(year, month, 0).getDate();
 }
-
-type PickerType = "day" | "month" | "year" | null;
 
 function ChevronIcon() {
   return (
@@ -45,14 +48,20 @@ export default function NumericDatePicker({
   min,
   max,
   invalid = false,
-  onChange
+  onChange,
+  openPicker: controlledOpenPicker,
+  onOpenPickerChange
 }: NumericDatePickerProps) {
   const initial = value ? value.split("-").map(Number) : [];
 
   const [year, setYear] = useState<number | "">(initial[0] || "");
   const [month, setMonth] = useState<number | "">(initial[1] || "");
   const [day, setDay] = useState<number | "">(initial[2] || "");
-  const [openPicker, setOpenPicker] = useState<PickerType>(null);
+  const [uncontrolledOpenPicker, setUncontrolledOpenPicker] = useState<PickerType>(null);
+
+  const isControlled = controlledOpenPicker !== undefined;
+  const openPicker = isControlled ? controlledOpenPicker : uncontrolledOpenPicker;
+  const setOpenPicker = isControlled ? onOpenPickerChange! : setUncontrolledOpenPicker;
 
   const minYear = Number(min.slice(0, 4));
   const maxYear = Number(max.slice(0, 4));
