@@ -168,6 +168,7 @@ export default function HomePage() {
       {formOpen ? (
         <Modal
           titleId="add-event-title"
+          variant="sheet-centered"
           onClose={() => setFormOpen(false)}
         >
           <AddEventForm

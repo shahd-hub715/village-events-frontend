@@ -3,8 +3,11 @@ import { useEffect, type ReactNode } from "react";
 interface ModalProps {
   titleId: string;
   onClose: () => void;
-  /** "sheet" = bottom sheet (the add-event form), "dialog" = small centered popup. */
-  variant?: "sheet" | "dialog";
+  /**
+   * "sheet" = bottom sheet, "dialog" = small centered popup,
+   * "sheet-centered" = same width/spacing as "sheet" but vertically centered like "dialog" (the add-event form).
+   */
+  variant?: "sheet" | "dialog" | "sheet-centered";
   children: ReactNode;
 }
 
@@ -29,7 +32,9 @@ export default function Modal({
 
   return (
     <div
-      className={`modal-overlay${variant === "dialog" ? " modal-overlay--center" : ""}`}
+      className={`modal-overlay${variant === "dialog" ? " modal-overlay--center" : ""}${
+        variant === "sheet-centered" ? " modal-overlay--sheet-centered" : ""
+      }`}
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}

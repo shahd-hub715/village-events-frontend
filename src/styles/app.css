@@ -578,6 +578,10 @@ input, select, textarea, button { font: inherit; }
   padding: 24px;
 }
 
+.modal-overlay--sheet-centered {
+  align-items: center;
+}
+
 .modal--dialog {
   max-width: 420px;
   border-radius: 20px;
