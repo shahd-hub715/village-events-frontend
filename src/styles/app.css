@@ -733,6 +733,32 @@ select.input {
   font: inherit;
 }
 
+.event-type-dropdown .numeric-date-menu {
+  padding: 4px;
+}
+
+.event-type-dropdown .numeric-date-option {
+  display: block;
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 12px 14px;
+  text-align: right;
+  color: var(--ink);
+}
+
+.event-type-dropdown .numeric-date-option:hover,
+.event-type-dropdown .numeric-date-option:focus-visible {
+  background: var(--surface-muted);
+  color: var(--ink);
+  outline: none;
+}
+
+.event-type-dropdown .numeric-date-option[aria-selected="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
 .input:focus {
   outline: none;
   border-color: var(--accent);
