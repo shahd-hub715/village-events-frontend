@@ -4,20 +4,13 @@ import EventTypeDropdown from "../EventTypeDropdown";
 import NumericDatePicker from "../NumericDatePicker";
 import { adminStrings } from "../../config/adminStrings";
 import { maxSelectableDate } from "../../config/years";
+import { todayIso } from "../../utils/date";
 import type {
   AdminEvent,
   AdminEventUpdate,
   AdminFieldErrors
 } from "../../types/adminEvent";
 import type { EventType } from "../../types/event";
-
-/**
- * The native date input this replaces had no min/max at all, so admins could
- * correct a date to any value (including past events). NumericDatePicker needs a
- * bounded year range, so this is a deliberately generous floor rather than an
- * exact equivalent — see the pre-launch review report for context.
- */
-const ADMIN_EVENT_DATE_MIN = "1990-01-01";
 
 type OpenMenu = "day" | "month" | "year" | "eventType" | null;
 
@@ -148,7 +141,7 @@ export default function AdminEditEventModal({
           <NumericDatePicker
             id="admin-eventDate"
             value={form.eventDate}
-            min={ADMIN_EVENT_DATE_MIN}
+            min={todayIso()}
             max={maxSelectableDate()}
             invalid={!!errors.eventDate}
             onChange={(value) => update("eventDate", value)}

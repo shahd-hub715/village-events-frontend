@@ -4,11 +4,17 @@ import { describe, expect, it, vi } from "vitest";
 import AdminEditEventModal from "./AdminEditEventModal";
 import type { AdminEvent } from "../../types/adminEvent";
 
+// A full year ahead of "now" so the date always falls inside the admin date
+// picker's current-date..+2-years window, however far in the future this runs.
+const FUTURE_YEAR = new Date().getFullYear() + 1;
+const INITIAL_DATE = `${FUTURE_YEAR}-06-10`;
+const EDITED_DATE = `${FUTURE_YEAR}-06-20`;
+
 const baseEvent: AdminEvent = {
   id: 1,
   personName: "محمد أحمد",
   eventType: "WEDDING",
-  eventDate: "2026-05-10",
+  eventDate: INITIAL_DATE,
   location: "قاعة الأفراح",
   contactPhone: "0591234567",
   notes: null,
@@ -55,7 +61,7 @@ describe("AdminEditEventModal", () => {
     expect(onSave).toHaveBeenCalledWith({
       personName: "محمد أحمد",
       eventType: "BRIDE_PARTY",
-      eventDate: "2026-05-20",
+      eventDate: EDITED_DATE,
       location: "قاعة الأفراح",
       contactPhone: "0591234567",
       notes: null
