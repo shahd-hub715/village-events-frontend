@@ -1,13 +1,25 @@
 import { useState, type FormEvent } from "react";
 import Modal from "../Modal";
+import EventTypeDropdown from "../EventTypeDropdown";
+import NumericDatePicker from "../NumericDatePicker";
 import { adminStrings } from "../../config/adminStrings";
-import { EVENT_TYPE_OPTIONS } from "../../config/strings";
+import { maxSelectableDate } from "../../config/years";
 import type {
   AdminEvent,
   AdminEventUpdate,
   AdminFieldErrors
 } from "../../types/adminEvent";
 import type { EventType } from "../../types/event";
+
+/**
+ * The native date input this replaces had no min/max at all, so admins could
+ * correct a date to any value (including past events). NumericDatePicker needs a
+ * bounded year range, so this is a deliberately generous floor rather than an
+ * exact equivalent — see the pre-launch review report for context.
+ */
+const ADMIN_EVENT_DATE_MIN = "1990-01-01";
+
+type OpenMenu = "day" | "month" | "year" | "eventType" | null;
 
 interface AdminEditEventModalProps {
   event: AdminEvent;
@@ -37,6 +49,8 @@ export default function AdminEditEventModal({
     notes: event.notes ?? ""
   });
   const [localErrors, setLocalErrors] = useState<AdminFieldErrors>({});
+  // Coordinates the date picker's day/month/year menus and the event-type dropdown so only one is open at a time.
+  const [openMenu, setOpenMenu] = useState<OpenMenu>(null);
 
   const errors: AdminFieldErrors = { ...serverErrors, ...localErrors };
 
@@ -69,7 +83,7 @@ export default function AdminEditEventModal({
   };
 
   return (
-    <Modal titleId="admin-edit-title" onClose={onClose}>
+    <Modal titleId="admin-edit-title" variant="sheet-centered" onClose={onClose}>
       <div className="modal-head">
         <h2 className="modal-title" id="admin-edit-title">
           {edit.title}
@@ -109,45 +123,45 @@ export default function AdminEditEventModal({
           ) : null}
         </div>
 
-        <div className="admin-form-row">
-          <div className="field">
-            <label className="label" htmlFor="admin-eventType">
-              {card.eventType} <span className="required">*</span>
-            </label>
-            <select
-              id="admin-eventType"
-              className="input"
-              value={form.eventType}
-              aria-invalid={!!errors.eventType}
-              onChange={(e) => update("eventType", e.target.value as EventType)}
-            >
-              {EVENT_TYPE_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            {errors.eventType ? (
-              <span className="field-error">{errors.eventType}</span>
-            ) : null}
-          </div>
+        <div className="field">
+          <label className="label" htmlFor="admin-eventType">
+            {card.eventType} <span className="required">*</span>
+          </label>
+          <EventTypeDropdown
+            id="admin-eventType"
+            value={form.eventType}
+            placeholder={validation.eventType}
+            invalid={!!errors.eventType}
+            onChange={(value: EventType) => update("eventType", value)}
+            open={openMenu === "eventType"}
+            onOpenChange={(next) => setOpenMenu(next ? "eventType" : null)}
+          />
+          {errors.eventType ? (
+            <span className="field-error">{errors.eventType}</span>
+          ) : null}
+        </div>
 
-          <div className="field">
-            <label className="label" htmlFor="admin-eventDate">
-              {card.eventDate} <span className="required">*</span>
-            </label>
-            <input
-              id="admin-eventDate"
-              className="input"
-              type="date"
-              value={form.eventDate}
-              aria-invalid={!!errors.eventDate}
-              onChange={(e) => update("eventDate", e.target.value)}
-            />
-            {errors.eventDate ? (
-              <span className="field-error">{errors.eventDate}</span>
-            ) : null}
-          </div>
+        <div className="field">
+          <label className="label" htmlFor="admin-eventDate">
+            {card.eventDate} <span className="required">*</span>
+          </label>
+          <NumericDatePicker
+            id="admin-eventDate"
+            value={form.eventDate}
+            min={ADMIN_EVENT_DATE_MIN}
+            max={maxSelectableDate()}
+            invalid={!!errors.eventDate}
+            onChange={(value) => update("eventDate", value)}
+            openPicker={
+              openMenu === "day" || openMenu === "month" || openMenu === "year"
+                ? openMenu
+                : null
+            }
+            onOpenPickerChange={setOpenMenu}
+          />
+          {errors.eventDate ? (
+            <span className="field-error">{errors.eventDate}</span>
+          ) : null}
         </div>
 
         <div className="admin-form-row">

@@ -1,5 +1,5 @@
 import BrandTitle from "../components/BrandTitle.tsx";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import AdminChangeRequestSection from "../components/admin/AdminChangeRequestSection";
 import AdminDeleteConfirmModal from "../components/admin/AdminDeleteConfirmModal";
 import AdminEditEventModal from "../components/admin/AdminEditEventModal";
@@ -188,6 +188,13 @@ export default function AdminPage() {
       adminStrings.error.unauthorized
     );
   }, []);
+
+  useEffect(() => {
+    if (!unauthorized) return;
+    queueMicrotask(() => {
+      expireSession();
+    });
+  }, [unauthorized, expireSession]);
 
   const signOut = () => {
     clearCredentials();

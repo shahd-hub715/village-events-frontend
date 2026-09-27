@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { strings } from "../config/strings";
 import Modal from "./Modal";
 
@@ -15,11 +15,18 @@ export default function SuccessModal({
   onClose,
   autoCloseMs = 5000
 }: SuccessModalProps) {
+  // Keeps the latest onClose reachable without making the timer effect depend on it,
+  // so a parent re-render (passing a new inline onClose) doesn't restart the countdown.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
   useEffect(() => {
     if (!autoCloseMs) return;
-    const timer = window.setTimeout(onClose, autoCloseMs);
+    const timer = window.setTimeout(() => onCloseRef.current(), autoCloseMs);
     return () => window.clearTimeout(timer);
-  }, [autoCloseMs, onClose]);
+  }, [autoCloseMs]);
 
   return (
     <Modal titleId="submission-success-title" variant="dialog" onClose={onClose}>

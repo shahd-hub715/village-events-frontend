@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { EVENT_TYPE_OPTIONS } from "../config/strings";
 import type { EventType } from "../types/event";
 
@@ -41,14 +42,32 @@ export default function EventTypeDropdown({
   onOpenChange
 }: EventTypeDropdownProps) {
   const selected = EVENT_TYPE_OPTIONS.find((option) => option.value === value);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const choose = (next: EventType) => {
     onChange(next);
     onOpenChange(false);
   };
 
+  useEffect(() => {
+    if (!open) return;
+
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        rootRef.current &&
+        event.target instanceof Node &&
+        !rootRef.current.contains(event.target)
+      ) {
+        onOpenChange(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [open, onOpenChange]);
+
   return (
-    <div className="event-type-dropdown">
+    <div className="event-type-dropdown" ref={rootRef}>
       <button
         type="button"
         id={id}

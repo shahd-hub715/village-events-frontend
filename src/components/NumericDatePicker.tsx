@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type PickerType = "day" | "month" | "year" | null;
 
@@ -62,6 +62,25 @@ export default function NumericDatePicker({
   const isControlled = controlledOpenPicker !== undefined;
   const openPicker = isControlled ? controlledOpenPicker : uncontrolledOpenPicker;
   const setOpenPicker = isControlled ? onOpenPickerChange! : setUncontrolledOpenPicker;
+
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (openPicker === null) return;
+
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        rootRef.current &&
+        event.target instanceof Node &&
+        !rootRef.current.contains(event.target)
+      ) {
+        setOpenPicker(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [openPicker, setOpenPicker]);
 
   const minYear = Number(min.slice(0, 4));
   const maxYear = Number(max.slice(0, 4));
@@ -145,6 +164,7 @@ export default function NumericDatePicker({
   return (
     <div
       id={id}
+      ref={rootRef}
       className="numeric-date-picker"
       aria-invalid={invalid}
     >
