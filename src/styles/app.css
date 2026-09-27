@@ -717,6 +717,22 @@ select.input {
   background-size: 14px;
 }
 
+.event-type-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.event-type-toggle {
+  height: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  font: inherit;
+}
+
 .input:focus {
   outline: none;
   border-color: var(--accent);

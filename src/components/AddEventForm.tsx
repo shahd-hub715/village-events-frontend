@@ -1,12 +1,13 @@
 import { useState, type FormEvent } from "react";
 import ConflictModal from "./ConflictModal";
-import { EVENT_TYPE_OPTIONS, strings } from "../config/strings";
+import { strings } from "../config/strings";
 import { maxSelectableDate } from "../config/years";
 import { ApiError } from "../services/apiError";
 import { createEvent } from "../services/eventService";
 import type { CreateEventRequest, EventType, FieldErrors } from "../types/event";
 import type { SubmissionResult } from "../types/ui";
 import { isPastDate, todayIso } from "../utils/date";
+import EventTypeDropdown from "./EventTypeDropdown";
 import NumericDatePicker from "./NumericDatePicker";
 
 interface AddEventFormProps {
@@ -159,22 +160,13 @@ export default function AddEventForm({
           <label className="label" htmlFor="eventType">
             {strings.form.fields.eventType} <span className="required">*</span>
           </label>
-          <select
+          <EventTypeDropdown
             id="eventType"
-            name="eventType"
-            className="input select"
-            required
             value={form.eventType}
-            aria-invalid={!!fieldErrors.eventType}
-            onChange={(event) => update("eventType", event.target.value as EventType)}
-          >
-            <option value="">{strings.form.placeholders.eventType}</option>
-            {EVENT_TYPE_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+            placeholder={strings.form.placeholders.eventType}
+            invalid={!!fieldErrors.eventType}
+            onChange={(value) => update("eventType", value)}
+          />
           {fieldErrors.eventType ? (
             <span className="field-error">{fieldErrors.eventType}</span>
           ) : null}
