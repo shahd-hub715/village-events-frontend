@@ -121,8 +121,13 @@
   color: var(--accent-ink);
   border-radius: 999px;
   min-width: 20px;
+  min-height: 20px;
   padding: 1px 6px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .admin-filter-chip.is-active .admin-filter-count {
