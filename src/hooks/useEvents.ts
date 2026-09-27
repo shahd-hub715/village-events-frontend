@@ -19,7 +19,9 @@ export function useEvents(year: number): UseEventsResult {
 
   useEffect(() => {
     let cancelled = false;
-    setStatus("loading");
+    queueMicrotask(() => {
+      if (!cancelled) setStatus("loading");
+    });
     fetchEvents(year)
       .then((data) => {
         if (cancelled) return;

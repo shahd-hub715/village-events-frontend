@@ -57,17 +57,22 @@ export function useAdminEvents(token: string | null): UseAdminEventsResult {
 
   useEffect(() => {
     if (!token) {
-      setPending([]);
-      setAll([]);
-      setPendingStatus("idle");
-      setAllStatus("idle");
+      queueMicrotask(() => {
+        setPending([]);
+        setAll([]);
+        setPendingStatus("idle");
+        setAllStatus("idle");
+      });
       return;
     }
 
     let cancelled = false;
-    setPendingStatus("loading");
-    setAllStatus("loading");
-    setUnauthorized(false);
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setPendingStatus("loading");
+      setAllStatus("loading");
+      setUnauthorized(false);
+    });
 
     const flagUnauthorized = (error: unknown) => {
       if (error instanceof ApiError && error.status === 401) setUnauthorized(true);

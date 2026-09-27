@@ -31,14 +31,19 @@ export function useAdminChangeRequests(token: string | null): UseAdminChangeRequ
 
   useEffect(() => {
     if (!token) {
-      setRequests([]);
-      setStatus("idle");
+      queueMicrotask(() => {
+        setRequests([]);
+        setStatus("idle");
+      });
       return;
     }
 
     let cancelled = false;
-    setStatus("loading");
-    setUnauthorized(false);
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setStatus("loading");
+      setUnauthorized(false);
+    });
 
     fetchPendingChangeRequests(token)
       .then((data) => {
