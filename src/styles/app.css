@@ -582,6 +582,15 @@ input, select, textarea, button { font: inherit; }
   align-items: center;
 }
 
+@media (max-width: 480px) {
+  /* The sheet overlay's padding is asymmetric (0 top / 10px bottom) to preserve
+     the bottom-sheet variant elsewhere, which pulls a centered modal up by half
+     that difference relative to the dialog variant's symmetric 24px padding. */
+  .modal-overlay--sheet-centered .modal {
+    transform: translateY(5px);
+  }
+}
+
 .modal--dialog {
   max-width: 420px;
   border-radius: 20px;
